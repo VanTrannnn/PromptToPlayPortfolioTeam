@@ -11,360 +11,12 @@
     <!-- Link to custom CSS -->
     <link rel="stylesheet" href="style.css">
     
-    <!-- ENHANCED HOVER EFFECTS -->
     <style>
-        /* Hiệu ứng nảy (bounce) và phóng to thẻ */
-        .player-card {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-        }
-
-        .player-card:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
-            z-index: 10;
-        }
-
-        /* Hiệu ứng chọn (Selected) */
-        .player-card:active {
-            transform: scale(0.95);
-        }
-
-        .player-card:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.2));
-            z-index: 10;
-        }
-
-        .player-card.p1:hover {
-            border-color: #38bdf8 !important;
-            box-shadow: 0 0 50px rgba(56, 189, 248, 0.6), inset 0 0 30px rgba(56, 189, 248, 0.4) !important;
-            background: radial-gradient(circle at center, rgba(56,189,248,0.15) 0%, rgba(0,0,0,0.8) 100%) !important;
-        }
-
-        .player-card.p2:hover {
-            border-color: #f472b6 !important;
-            box-shadow: 0 0 50px rgba(244, 114, 182, 0.6), inset 0 0 30px rgba(244, 114, 182, 0.4) !important;
-            background: radial-gradient(circle at center, rgba(244,114,182,0.15) 0%, rgba(0,0,0,0.8) 100%) !important;
-        }
-
-        /* Phóng to và phát sáng Avatar */
-        .player-card:hover .player-avatar {
-            transform: scale(1.15);
-        }
-        .player-card.p1:hover .player-avatar {
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.8);
-        }
-        .player-card.p2:hover .player-avatar {
-            box-shadow: 0 0 25px rgba(244, 114, 182, 0.8);
-        }
-
-        /* Nút Press Start chớp tắt rực rỡ */
-        .press-start-btn {
-            transition: all 0.3s ease;
-        }
-        .player-card.p1:hover .press-start-btn {
-            background-color: #38bdf8;
-            color: #000;
-            border-color: #38bdf8;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.8);
-            animation: blinker 0.4s linear infinite; /* Chớp nhanh */
-        }
-        .player-card.p2:hover .press-start-btn {
-            background-color: #f472b6;
-            color: #000;
-            border-color: #f472b6;
-            box-shadow: 0 0 15px rgba(244, 114, 182, 0.8);
-            animation: blinker 0.4s linear infinite; /* Chớp nhanh */
-        }
-
-        /* Sci-fi scanline effect cho project cards */
-        .project-card {
-            position: relative;
-            isolation: isolate;
-            transform: translateZ(0);
-            overflow: hidden;
-            user-select: none;
-            transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease, filter 0.35s ease;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.05), 0 18px 45px rgba(0,0,0,0.45);
-            filter: brightness(1.03);
-        }
-
-        .project-card:active {
-            transform: scale(0.97);
-            transition-duration: 0.15s;
-        }
-
-        .project-card.is-selected {
-            transform: translateY(-3px) scale(1.01);
-            border-color: rgba(255,255,255,0.7) !important;
-            box-shadow: 0 0 0 1px rgba(255,255,255,0.2), 0 0 35px rgba(255,255,255,0.12), 0 20px 50px rgba(0,0,0,0.5) !important;
-        }
-
-        .project-card.is-selected .project-card-image {
-            transform: scale(1.06);
-            filter: saturate(1.16) brightness(1.06);
-        }
-
-        .project-card.is-selected .project-card-overlay {
-            background: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.58) 100%);
-        }
-
-        .project-card::before,
-        .project-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.25s ease;
-        }
-
-        .project-card::before {
-            inset: -30% 0 auto 0;
-            height: 160%;
-            background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.16) 45%, transparent 100%);
-            transform: translateY(-120%);
-            transition: transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.25s ease;
-        }
-
-        .project-card::after {
-            inset: 10px;
-            border: 1px solid rgba(255,255,255,0.12);
-            border-radius: inherit;
-            transform: scale(0.97);
-            transition: transform 0.35s ease, opacity 0.25s ease, border-color 0.35s ease, box-shadow 0.35s ease;
-        }
-
-        .project-card:hover::before,
-        .project-card.is-selected::before {
-            opacity: 1;
-            transform: translateY(120%);
-        }
-
-        .project-card:hover::after,
-        .project-card.is-selected::after {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .project-card.p1:hover::after,
-        .project-card.p1.is-selected::after {
-            border-color: rgba(56, 189, 248, 0.4);
-            box-shadow: inset 0 0 18px rgba(56, 189, 248, 0.16);
-        }
-
-        .project-card.p2:hover::after,
-        .project-card.p2.is-selected::after {
-            border-color: rgba(244, 114, 182, 0.4);
-            box-shadow: inset 0 0 18px rgba(244, 114, 182, 0.16);
-        }
-
-        .project-card.p1:hover,
-        .project-card.p1.is-selected {
-            border-color: #38bdf8 !important;
-            box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.25), 0 0 40px rgba(56, 189, 248, 0.3), 0 18px 45px rgba(0,0,0,0.45) !important;
-        }
-
-        .project-card.p1:hover .project-card-image,
-        .project-card.p1.is-selected .project-card-image {
-            transform: scale(1.08);
-            filter: saturate(1.2) brightness(1.05);
-        }
-
-        .project-card.p2:hover,
-        .project-card.p2.is-selected {
-            border-color: #f472b6 !important;
-            box-shadow: 0 0 0 1px rgba(244, 114, 182, 0.25), 0 0 40px rgba(244, 114, 182, 0.3), 0 18px 45px rgba(0,0,0,0.45) !important;
-        }
-
-        .project-card.p2:hover .project-card-image,
-        .project-card.p2.is-selected .project-card-image {
-            transform: scale(1.08);
-            filter: saturate(1.15) brightness(1.05);
-        }
-
-        .project-card:hover .project-card-overlay {
-            background: linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
-        }
-
-        .project-card:hover h4,
-        .project-card.is-selected h4 {
-            transform: translateY(-1px);
-            text-shadow: 0 0 16px rgba(255,255,255,0.2);
-        }
-
-        .project-card h4 {
-            transition: transform 0.3s ease, text-shadow 0.3s ease;
-        }
-
-        .project-card-image {
-            transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), filter 0.45s ease;
-            transform: scale(1);
-        }
-
-        .project-card-overlay {
-            transition: background 0.35s ease;
-        }
-
-        .project-card-ripple {
-            position: absolute;
-            border-radius: 9999px;
-            border: 1px solid rgba(255,255,255,0.75);
-            transform: translate(-50%, -50%) scale(0);
-            pointer-events: none;
-            z-index: 3;
-            animation: projectRipple 0.6s ease-out forwards;
-        }
-
-        .project-card.p1 .project-card-ripple {
-            border-color: rgba(56, 189, 248, 0.75);
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
-        }
-
-        .project-card.p2 .project-card-ripple {
-            border-color: rgba(244, 114, 182, 0.75);
-            box-shadow: 0 0 12px rgba(244, 114, 182, 0.2);
-        }
-
-        .neon-title {
-            color: #f8fbff;
-            text-shadow: 0 0 6px rgba(255,255,255,0.35), 0 0 16px rgba(56, 189, 248, 0.15);
-            animation: neonPulse 1.8s ease-in-out infinite alternate;
-        }
-
-        .hero-heading {
-            position: relative;
-            display: inline-block;
-            padding: 0.2rem 0.6rem;
-        }
-
-        .hero-heading::before,
-        .hero-heading::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(56, 189, 248, 0.8), transparent);
-            opacity: 0.7;
-            transform: scaleX(0.7);
-        }
-
-        .hero-heading::before {
-            top: -0.25rem;
-            animation: scanLine 2.4s linear infinite;
-        }
-
-        .hero-heading::after {
-            bottom: -0.25rem;
-            animation: scanLine 2.4s linear infinite reverse;
-        }
-
-        .hero-subtitle {
-            color: #a9bacd;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-            text-shadow: 0 0 8px rgba(255,255,255,0.18), 0 0 18px rgba(56, 189, 248, 0.16);
-            animation: subtitleGlow 2.2s ease-in-out infinite alternate;
-        }
-
-        .hero-title {
-            letter-spacing: 0.2em;
-            transform: translateZ(0);
-            text-shadow: 0 0 8px rgba(255,255,255,0.28), 0 0 20px rgba(56, 189, 248, 0.2);
-        }
-
-        .nav-tab {
-            position: relative;
-            transition: color 0.25s ease, text-shadow 0.25s ease, transform 0.25s ease;
-        }
-
-        .nav-tab:hover,
-        .nav-tab.active {
-            color: #ffffff;
-            transform: translateY(-1px);
-            text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 22px rgba(56, 189, 248, 0.25);
-        }
-
-        .nav-tab::before {
-            content: '▶';
-            position: absolute;
-            left: -1rem;
-            top: 50%;
-            transform: translateY(-50%) translateX(-8px);
-            opacity: 0;
-            color: #38bdf8;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.7);
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        .nav-tab:hover::before,
-        .nav-tab.active::before {
-            opacity: 1;
-            transform: translateY(-50%) translateX(0);
-        }
-
-        .nav-tab.p2:hover::before,
-        .nav-tab.p2.active::before {
-            color: #f472b6;
-            text-shadow: 0 0 10px rgba(244, 114, 182, 0.7);
-        }
-
-        @keyframes projectRipple {
-            0% {
-                transform: translate(-50%, -50%) scale(0);
-                opacity: 0.75;
-            }
-            100% {
-                transform: translate(-50%, -50%) scale(1.8);
-                opacity: 0;
-            }
-        }
-
-        @keyframes neonPulse {
-            from {
-                text-shadow: 0 0 6px rgba(255,255,255,0.35), 0 0 16px rgba(56, 189, 248, 0.15);
-                filter: brightness(0.95);
-            }
-            to {
-                text-shadow: 0 0 10px rgba(255,255,255,0.6), 0 0 24px rgba(56, 189, 248, 0.3), 0 0 36px rgba(56, 189, 248, 0.16);
-                filter: brightness(1.06);
-            }
-        }
-
-        @keyframes subtitleGlow {
-            from {
-                text-shadow: 0 0 6px rgba(255,255,255,0.15), 0 0 14px rgba(56, 189, 248, 0.12);
-                filter: brightness(0.95);
-            }
-            to {
-                text-shadow: 0 0 10px rgba(255,255,255,0.24), 0 0 24px rgba(56, 189, 248, 0.22);
-                filter: brightness(1.05);
-            }
-        }
-
-        @keyframes scanLine {
-            0% {
-                transform: scaleX(0.5);
-                opacity: 0.2;
-            }
-            50% {
-                transform: scaleX(1);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scaleX(0.5);
-                opacity: 0.2;
-            }
-        }
+        /* Custom scrollbar cho khung trắng portfolio để cuộn mượt hơn */
+        .portfolio-scroll::-webkit-scrollbar { width: 8px; }
+        .portfolio-scroll::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 8px; }
+        .portfolio-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+        .portfolio-scroll::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
     
 <div id="audio-control" class="fixed bottom-4 right-4 z-50">
@@ -475,14 +127,14 @@
 
             <!-- SCENE 2: PLAYER 1 (VAN) DETAILS -->
             <div id="view-p1" class="game-view">
-                <div class="flex justify-between items-center mb-6 py-3 border-b border-gray-800">
+                <div class="flex justify-between items-center mb-6 py-3 border-b border-gray-800 shrink-0">
                     <button class="btn-back text-xs md:text-sm" onclick="switchView('view-select', true)">
                         <i class="fa-solid fa-caret-left mr-2"></i> SELECT SCREEN
                     </button>
                     <div class="text-[#38bdf8] font-bold tracking-widest text-sm md:text-xl">PLAYER 1 STATS</div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-auto shrink-0">
                     
                     <!-- Left: Character Stats -->
                     <div class="lg:col-span-4 flex flex-col gap-6">
@@ -596,6 +248,17 @@
                                 </div>
                             </div>
 
+                            <!-- P1 Project 4 Card -->
+                            <div class="project-card relative h-48 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#eab308] transition-all p1" onclick="openModal('grill-sort')">
+                                <img src="./assets/VanPrj/grillsort/grill.png" alt="Grill Sort" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300" onerror="this.src='https://placehold.co/400x300/1a1a1a/eab308?text=Grill+Sort'">
+                                <div class="project-card-overlay absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent opacity-80"></div>
+                                <div class="absolute bottom-0 left-0 p-4 w-full">
+                                    <span class="text-[10px] md:text-xs bg-[#eab308]/20 text-[#eab308] px-2 py-1 rounded border border-[#eab308]/50">Sorting Puzzle</span>
+                                    <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#eab308] transition-colors">Grill Sort</h4>
+                                    <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#eab308]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -603,14 +266,14 @@
 
             <!-- SCENE 3: PLAYER 2 (THINH) DETAILS -->
             <div id="view-p2" class="game-view">
-                <div class="flex justify-between items-center mb-6 py-3 border-b border-gray-800">
+                <div class="flex justify-between items-center mb-6 py-3 border-b border-gray-800 shrink-0">
                     <button class="btn-back text-xs md:text-sm" onclick="switchView('view-select', true)">
                         <i class="fa-solid fa-caret-left mr-2"></i> SELECT SCREEN
                     </button>
                     <div class="text-[#f472b6] font-bold tracking-widest text-sm md:text-xl">PLAYER 2 STATS</div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 h-auto shrink-0">
                     
                     <!-- Left: Character Stats -->
                     <div class="lg:col-span-4 flex flex-col gap-6">
@@ -693,25 +356,14 @@
                         <!-- Completed Levels (Projects) -->
                         <h3 class="text-xl md:text-2xl font-bold text-white uppercase mb-4 md:mb-6 border-b border-gray-800 pb-2">Completed Levels</h3>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            
-                            <!-- P2 Project 1 Card -->
-                            <div class="project-card relative h-48 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="openModal('ui-showcase')">
-                                <img src="./assets/ui-bg.png" alt="UI Showcase" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+
+                            <!-- P2 Project Card (Chuyển Hướng sang Custom Page) -->
+                            <div class="project-card relative h-48 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="switchView('view-project-humada')">
+                                <img src="./assets/ThinhPrj/hs/hs.png" alt="Storytelling Design" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                                 <div class="project-card-overlay absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent opacity-80"></div>
                                 <div class="absolute bottom-0 left-0 p-4 w-full">
-                                    <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Video / Prototype</span>
-                                    <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">HUMADA STORIES</h4>
-                                    <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#f472b6]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
-                                </div>
-                            </div>
-
-                            <!-- P2 Project 2 Card Placeholder -->
-                            <div class="project-card relative h-48 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="openModal('ui-design')">
-                                <div class="project-card-overlay absolute inset-0 bg-gray-900 opacity-30 group-hover:opacity-50 transition-opacity duration-300"></div>
-                                <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent"></div>
-                                <div class="absolute bottom-0 left-0 p-4 w-full">
-                                    <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Community Story</span>
-                                    <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">HUMADA STORIES</h4>
+                                    <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Story Telling & Image Design</span>
+                                    <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">Humada's Stories</h4>
                                     <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#f472b6]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
                                 </div>
                             </div>
@@ -729,7 +381,7 @@
                     <button class="nav-tab active">PROJECTS</button>
                 </div>
 
-                <div class="w-full max-w-6xl pb-8">
+                <div class="w-full max-w-6xl pb-8 shrink-0">
                     <div class="text-center mb-10">
                         <h1 class="neon-title text-3xl md:text-5xl font-bold tracking-widest mb-2">ALL PROJECTS</h1>
                         <p class="text-slate-400 text-sm md:text-base tracking-wider">OUR TEAM'S LEVELS</p>
@@ -770,25 +422,25 @@
                             </div>
                         </div>
 
-                        <!-- P2 Projects -->
-                        <div class="project-card relative h-56 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="openModal('ui-showcase')">
-                            <div class="absolute top-3 left-3 bg-[#f472b6] text-black text-[10px] md:text-xs font-bold px-2 py-1 rounded z-10 shadow-lg">PLAYER 2 - THỊNH</div>
-                            <img src="./assets/ui-bg.png" alt="Game UI Showcase" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                        <div class="project-card relative h-56 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#eab308] transition-all p1" onclick="openModal('grill-sort')">
+                            <div class="absolute top-3 left-3 bg-[#eab308] text-black text-[10px] md:text-xs font-bold px-2 py-1 rounded z-10 shadow-lg">PLAYER 1 - VẠN</div>
+                            <img src="./assets/VanPrj/grillsort/grill.png" alt="Grill Sort" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300" onerror="this.src='https://placehold.co/400x300/1a1a1a/eab308?text=Grill+Sort'">
                             <div class="project-card-overlay absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent opacity-80"></div>
                             <div class="absolute bottom-0 left-0 p-4 w-full">
-                                <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Video / Prototype</span>
-                                <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">Game UI Showcase</h4>
-                                <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#f472b6]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
+                                <span class="text-[10px] md:text-xs bg-[#eab308]/20 text-[#eab308] px-2 py-1 rounded border border-[#eab308]/50">Sorting Puzzle</span>
+                                <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#eab308] transition-colors">Grill Sort</h4>
+                                <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#eab308]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
                             </div>
                         </div>
 
-                        <div class="project-card relative h-56 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="openModal('ui-design')">
+                        <!-- P2 Projects (Chuyển Hướng sang Custom Page) -->
+                        <div class="project-card relative h-56 border-2 border-gray-800 rounded-xl overflow-hidden cursor-pointer group hover:border-[#f472b6] transition-all p2" onclick="switchView('view-project-humada')">
                             <div class="absolute top-3 left-3 bg-[#f472b6] text-black text-[10px] md:text-xs font-bold px-2 py-1 rounded z-10 shadow-lg">PLAYER 2 - THỊNH</div>
-                            <img src="./assets/ui-bg.png" alt="Humada Stories" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+                            <img src="./assets/ThinhPrj/hs/hs.png" alt="Storytelling Design" class="project-card-image absolute inset-0 w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                             <div class="project-card-overlay absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/30 to-transparent opacity-80"></div>
                             <div class="absolute bottom-0 left-0 p-4 w-full">
-                                <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Community Story</span>
-                                <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">Humada Stories</h4>
+                                <span class="text-[10px] md:text-xs bg-[#f472b6]/20 text-[#f472b6] px-2 py-1 rounded border border-[#f472b6]/50">Story Telling & Image Design</span>
+                                <h4 class="text-lg md:text-xl font-bold text-white uppercase mt-2 group-hover:text-[#f472b6] transition-colors">Humada's Stories</h4>
                                 <p class="text-[10px] md:text-xs text-gray-400 mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0 text-[#f472b6]">Click to view details <i class="fa-solid fa-arrow-right ml-1"></i></p>
                             </div>
                         </div>
@@ -797,7 +449,155 @@
                 </div>
             </div>
 
-            <!-- MODAL UI: PROJECT DETAILS -->
+            <!-- SCENE 5: CUSTOM PORTFOLIO PAGE (HUMADA'S STORIES) -->
+            <div id="view-project-humada" class="game-view">
+                <div class="flex justify-between items-center mb-6 py-3 border-b border-gray-800 shrink-0">
+                    <button class="btn-back text-xs md:text-sm" onclick="switchView('view-p2', true)">
+                        <i class="fa-solid fa-caret-left mr-2"></i> BACK TO THỊNH
+                    </button>
+                    <div class="text-[#f472b6] font-bold tracking-widest text-sm md:text-xl uppercase">Portfolio Showcase</div>
+                </div>
+
+                <!-- Thiết kế mô phỏng Layout Design Portfolio (Chữ đỏ, Nền trắng) -->
+                <div class="w-full max-w-4xl mx-auto bg-[#faf9f6] text-gray-800 font-sans rounded-xl shadow-2xl overflow-hidden mb-12 shrink-0 h-auto">
+                    
+                    <!-- Banner Cover -->
+                    <div class="w-full h-48 md:h-72 relative bg-red-900 overflow-hidden">
+                        <img src="./assets/ThinhPrj/hs/hs.png" alt="Cover" class="w-full h-full object-cover opacity-60 mix-blend-overlay">
+                        <div class="absolute inset-0 bg-gradient-to-t from-red-900 via-red-900/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-10 w-full">
+                            <h1 class="text-3xl md:text-5xl font-black text-white tracking-tight mb-2 uppercase drop-shadow-md">Humada's Stories</h1>
+                            <p class="text-white/90 text-sm md:text-lg italic tracking-wide">Community Storytelling page for Huynh Man Dat High School for the Gifted</p>
+                        </div>
+                    </div>
+
+                    <!-- Nội Dung Chi Tiết -->
+                    <div class="p-6 md:p-10 flex flex-col gap-10 lg:gap-14">
+                        
+                        <!-- 1. Text Intro -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h3 class="text-xl font-bold text-[#c92a2a] mb-4">What is Humada's Stories?</h3>
+                                <p class="text-sm text-gray-600 leading-relaxed text-justify">
+                                    "Humada's Stories" is a community platform, operating as a confession and storytelling hub. The page acts as a bridge, connecting current students and alumni, giving them a voice and a space to share their memorable high school experiences.
+                                </p>
+                            </div>
+                            <div class="bg-gray-100 p-6 rounded-xl border-l-4 border-[#c92a2a]">
+                                <h3 class="text-xl font-bold text-[#c92a2a] mb-4">Project Overview</h3>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+                                    <li><strong>Project Type:</strong> Community Storytelling</li>
+                                    <li><strong>Target Audience:</strong> High School Students, Alumni</li>
+                                    <li><strong>Key Metrics:</strong> High engagement, regular submissions</li>
+                                    <li><strong>My Role:</strong> UI/UX, Content Creator, Design Asset Management</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 2. Humada's Guides -->
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black text-[#c92a2a] uppercase border-b-2 border-red-100 pb-3 mb-6">Humada's Guides</h2>
+                            <p class="text-sm text-gray-600 mb-6 italic">Visual guidelines guiding users through the confession submission process.</p>
+                            <div class="w-full rounded-xl overflow-hidden shadow-lg border border-gray-200 bg-white">
+                                <img src="./assets/ThinhPrj/hs/hs.png" alt="Guides" class="w-full h-auto object-cover max-h-96">
+                            </div>
+                        </div>
+
+                        <!-- 3. Humada's View (Image Grid) -->
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black text-[#c92a2a] uppercase border-b-2 border-red-100 pb-3 mb-6">Humada's View</h2>
+                            <p class="text-sm text-gray-600 mb-6 italic">A collection of cinematic shots capturing the nostalgic atmosphere of the school.</p>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                <div class="bg-gray-200 h-32 md:h-48 rounded-lg overflow-hidden shadow-md"><img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                                <div class="bg-gray-200 h-32 md:h-48 rounded-lg overflow-hidden shadow-md"><img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                                <div class="bg-gray-200 h-32 md:h-48 rounded-lg overflow-hidden shadow-md md:row-span-2 md:h-auto"><img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                                <div class="bg-gray-200 h-32 md:h-48 rounded-lg overflow-hidden shadow-md"><img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                                <div class="bg-gray-200 h-32 md:h-48 rounded-lg overflow-hidden shadow-md"><img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"></div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Special Series -->
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black text-[#c92a2a] uppercase border-b-2 border-red-100 pb-3 mb-6">Special Series</h2>
+                            <div class="flex flex-col gap-8">
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                    <div class="md:col-span-2">
+                                        <h4 class="font-bold text-lg text-gray-800 uppercase">"Đó là lần đầu..." Series</h4>
+                                        <p class="text-sm text-gray-500 mt-2 text-justify">Visualizing first-time experiences and memorable moments shared by the students, using engaging comic-style layouts.</p>
+                                    </div>
+                                    <div class="md:col-span-3 rounded-xl overflow-hidden shadow-md">
+                                        <img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-48 object-cover object-top">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-5 gap-6 items-center">
+                                    <div class="md:col-span-3 rounded-xl overflow-hidden shadow-md order-2 md:order-1">
+                                        <img src="./assets/ThinhPrj/hs/hs.png" class="w-full h-48 object-cover object-center">
+                                    </div>
+                                    <div class="md:col-span-2 order-1 md:order-2">
+                                        <h4 class="font-bold text-lg text-gray-800 uppercase">"Những bước chân cuối cùng"</h4>
+                                        <p class="text-sm text-gray-500 mt-2 text-justify">A special tribute series dedicated to graduating seniors, capturing their final emotional moments before leaving high school.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 5. Humada's Story (Confessions Grid - Dynamic Masonry Layout) -->
+                        <div>
+                            <h2 class="text-2xl md:text-3xl font-black text-[#e85d75] uppercase mb-2">Humada's Story</h2>
+                            <p class="text-sm text-gray-600 mb-8 italic">Operating as a confession-style feature, followers can submit anonymous stories which are then visualized and shared, forming one of the page's core recurring content formats.</p>
+                            
+                            <!-- Masonry Grid cho các thẻ vàng -->
+                            <div class="columns-1 sm:columns-2 lg:columns-3 gap-6 space-y-6">
+                                
+                                <!-- Card 1: HẠ CUỐI -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story1.jpg" alt="Hạ cuối" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x300/fdfaf2/c92a2a?text=Hạ+Cuối'">
+                                </div>
+
+                                <!-- Card 2: CHỈ CHÚNG TA -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story2.jpg" alt="Chỉ chúng ta hiểu nhau" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x400/fdfaf2/c92a2a?text=Chỉ+Chúng+Ta'">
+                                </div>
+                                
+                                <!-- Card 3: GỬI EM -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story3.jpg" alt="Gửi em..." class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x350/fdfaf2/c92a2a?text=Gửi+Em...'">
+                                </div>
+
+                                <!-- Card 4: BƠ VƠ -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story4.jpg" alt="Bơ vơ bên những mộng mơ" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x500/fdfaf2/c92a2a?text=Bơ+Vơ'">
+                                </div>
+
+                                <!-- Card 5: TUỔI TRẺ -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story5.jpg" alt="Tuổi trẻ chẳng đến lần hai" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x450/fdfaf2/c92a2a?text=Tuổi+Trẻ'">
+                                </div>
+
+                                <!-- Card 6: VỀ ĐÂU -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story6.jpg" alt="Về đâu giữa lối tương tư" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x380/fdfaf2/c92a2a?text=Về+Đâu'">
+                                </div>
+
+                                <!-- Card 7: COPY CỦA CHỈ CHÚNG TA (Để fill đầy grid) -->
+                                <div class="break-inside-avoid">
+                                    <img src="./assets/ThinhPrj/hs/story7.jpg" alt="Chỉ chúng ta hiểu nhau" class="w-full rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-[#f5e6b3]" onerror="this.src='https://placehold.co/400x300/fdfaf2/c92a2a?text=Chỉ+Chúng+Ta'">
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <!-- Footer -->
+                    <div class="w-full bg-red-900 py-8 px-6 text-center text-white mt-4">
+                        <p class="text-sm md:text-base font-bold tracking-widest uppercase opacity-80 mb-2">Feel free to reach out</p>
+                        <p class="text-xs opacity-60">Created by Lê Hữu Thịnh - Game Planner & UI/UX</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- MODAL UI: PROJECT DETAILS (DÀNH CHO CÁC GAME KHÁC) -->
             <div id="project-modal" class="hidden fixed inset-0 z-[200] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm opacity-0 transition-opacity duration-300" onclick="closeModal(event)">
                 <!-- Ngăn thao tác click lan ra ngoài modal -->
                 <div class="bg-[#0a0f1a] border-2 border-gray-700 rounded-xl w-full max-w-4xl max-h-[90vh] flex flex-col shadow-2xl transform scale-95 transition-transform duration-300" id="modal-content" onclick="event.stopPropagation()">
@@ -816,7 +616,6 @@
                         
                         <!-- Images Gallery -->
                         <div class="lg:w-3/5 flex flex-col gap-3">
-                            <!-- Đã thêm ID 'modal-img-container' để dễ dàng đổi CSS dọc ngang bằng Javascript -->
                             <div id="modal-img-container" class="w-full h-48 md:h-80 bg-black rounded-lg border border-gray-700 overflow-hidden relative flex justify-center items-center">
                                 <img id="modal-main-img" src="" class="w-full h-full object-cover transition-opacity duration-300">
                             </div>
@@ -902,11 +701,10 @@
             // Lắng nghe click đầu tiên trên toàn trang để khởi tạo audio (Luật của trình duyệt)
             document.body.addEventListener('click', initAudio, { once: true });
 
-            document.querySelectorAll('div[onclick*="openModal("]').forEach(card => {
+            document.querySelectorAll('div[onclick*="openModal("], div[onclick*="switchView(\'view-project-humada\'"]').forEach(card => {
                 card.classList.add('project-card');
-                card.classList.toggle('p1', !card.closest('#view-p2'));
-                card.classList.toggle('p2', Boolean(card.closest('#view-p2')));
-
+                card.classList.toggle('p1', !card.closest('#view-p2') && !card.closest('#view-all-projects')?.classList.contains('p2')); // Đơn giản hóa, đã add cứng class p1, p2 trên HTML
+                
                 card.addEventListener('click', (event) => {
                     card.classList.add('is-selected');
                     clearTimeout(card._selectedTimer);
@@ -961,6 +759,7 @@
                 badge: 'Pathfinding Puzzle',
                 color: '#38bdf8',
                 desc: 'Unity puzzle game where players draw paths to park cars while avoiding dynamic obstacles. 10 progressive levels designed with increasing difficulty. Implemented Line Renderer mechanics and complex collision logic.',
+                video: './assets/VanPrj/parking/gameplay.mp4', // <--- THÊM ĐƯỜNG DẪN VIDEO VÀO ĐÂY
                 images: ['./assets/VanPrj/parking/parking1.png', './assets/VanPrj/parking/parking2.png', './assets/VanPrj/parking/parking3.png'],
                 links: `
                     <a href="https://vantrannnn.itch.io/parking-car" target="_blank" class="text-xs font-bold text-black bg-[#38bdf8] px-4 py-2 rounded hover:bg-white transition-colors">PLAY GAME</a>
@@ -972,6 +771,7 @@
                 badge: 'Logic Strategy',
                 color: '#38bdf8',
                 desc: 'Mathematical strategy game based on the classic Nim logic, challenging players to optimize moves and outsmart AI. Implemented an intelligent AI opponent utilizing the Nim-sum mathematical algorithm for three difficulty levels. Developed a responsive UI system with dynamic object scaling using Unity grid layout group to fit any quantity of items.',
+                video: './assets/VanPrj/ballnim/gameplay.mp4', // <--- THÊM ĐƯỜNG DẪN VIDEO VÀO ĐÂY
                 images: ['./assets/VanPrj/ballnim/nim1.png', './assets/VanPrj/ballnim/nim2.png', './assets/VanPrj/ballnim/nim3.png'],
                 links: `
                     <a href="https://vantrannnn.itch.io/ballnim" target="_blank" class="text-xs font-bold text-black bg-[#38bdf8] px-4 py-2 rounded hover:bg-white transition-colors">PLAY GAME</a>
@@ -982,30 +782,25 @@
                 title: 'Word Game',
                 badge: 'Word Puzzle',
                 color: '#38bdf8',
-                isPortrait: true, // THÊM CỜ ĐỂ BÁO ĐÂY LÀ GAME MÀN HÌNH DỌC
+                isPortrait: true,
                 desc: 'Mobile word-puzzle game inspired by Wordle, focusing on logic and vocabulary. Implemented 3-state word check (Green/Yellow/Gray). Features dynamic levels from a 5,757-word dictionary and in-game currency for hint system.',
+                video: './assets/VanPrj/wordgame/gameplay.mp4', // <--- THÊM ĐƯỜNG DẪN VIDEO VÀO ĐÂY
                 images: ['./assets/VanPrj/wordgame/word1.png', './assets/VanPrj/wordgame/word2.png', './assets/VanPrj/wordgame/word3.png'],
                 links: `
                     <a href="https://github.com/VanTrannnn/WordGame" target="_blank" class="text-xs font-bold text-[#38bdf8] border border-[#38bdf8] px-4 py-2 rounded hover:bg-[#38bdf8] hover:text-black transition-colors">GITHUB REPO</a>
                 `
             },
-            'ui-showcase': {
-                title: 'Game UI Showcase',
-                badge: 'Video / Prototype',
-                color: '#f472b6',
-                desc: 'Video montage and Figma prototypes demonstrating user interface flow, animations, and art assets designed for upcoming games. Focuses on intuitive user journey and striking visual aesthetics.',
-                images: ['./assets/ui-1.png', './assets/ui-2.png', './assets/ui-3.png'],
+            'grill-sort': {
+                title: 'Grill Sort',
+                badge: 'Sorting Puzzle (Prototype)',
+                color: '#eab308',
+                isPortrait: true,
+                desc: 'A casual sorting puzzle game where players arrange ingredients on grilling skewers. Currently in active development, focusing on building core sorting algorithms, prototype mechanics, and optimizing drag-and-drop logic in Unity.',
+                video: './assets/VanPrj/grillsort/gameplay.mp4',
+                images: ['./assets/VanPrj/grillsort/grill1.png', './assets/VanPrj/grillsort/grill2.png'],
                 links: `
-                    <a href="https://thinh-le-huu.figma.site/" target="_blank" class="text-xs font-bold text-black bg-[#f472b6] px-4 py-2 rounded hover:bg-white transition-colors"><i class="fa-solid fa-play mr-1"></i> VIEW PROJECT</a>
-                `
-            },
-            'ui-design': {
-                title: 'Humada’s Stories',
-                badge: 'Story Page',
-                color: '#f472b6',
-                desc: 'Co-founded a storytelling community page for Huynh Man Dat High School for the Gifted, growing it to 4.9K followers. Managed page direction, content pillars, and fan engagement while writing narrative-driven posts and designing visual content. Applied planner-style thinking to structure campaigns like a game journey, keeping storytelling consistent and audience interactions strong.',
-                images: ['./assets/ui-bg.png', './assets/ui-bg.png'],
-                links: `
+                    <span class="text-xs font-bold text-gray-400 border border-gray-600 px-4 py-2 rounded bg-gray-800/50 cursor-not-allowed">PLAY GAME (SOON)</span>
+                    <a href="https://github.com/VanTrannnn/" target="_blank" class="text-xs font-bold text-[#eab308] border border-[#eab308] px-4 py-2 rounded hover:bg-[#eab308] hover:text-black transition-colors">GITHUB REPO</a>
                 `
             }
         };
@@ -1031,12 +826,18 @@
             document.getElementById('modal-desc').innerHTML = data.desc;
             document.getElementById('modal-links').innerHTML = data.links;
 
-            // Xử lý bộ sưu tập ảnh dọc hoặc ngang
+            // Xử lý bộ sưu tập ảnh dọc hoặc ngang VÀ VIDEO
             const imgContainer = document.getElementById('modal-img-container');
-            const mainImg = document.getElementById('modal-main-img');
             const thumbContainer = document.getElementById('modal-thumbnails');
             const isPortrait = data.isPortrait === true;
             
+            // Dọn dẹp container ảnh chính trước khi thêm mới (video hoặc ảnh)
+            imgContainer.innerHTML = '';
+            
+            // Tạo elements cho ảnh chính (để dùng lại khi click thumbnail)
+            const mainImg = document.createElement('img');
+            mainImg.id = 'modal-main-img';
+
             // Nếu là màn hình dọc (Word Game) thì kéo dài khung và cho ảnh chứa toàn bộ (contain)
             if (isPortrait) {
                 imgContainer.className = "w-full h-[400px] md:h-[500px] bg-[#050505] rounded-lg border border-gray-700 overflow-hidden relative flex justify-center items-center";
@@ -1045,38 +846,116 @@
                 imgContainer.className = "w-full h-48 md:h-80 bg-black rounded-lg border border-gray-700 overflow-hidden relative flex justify-center items-center";
                 mainImg.className = "w-full h-full object-cover transition-opacity duration-300";
             }
+            
+            // XỬ LÝ NẾU CÓ VIDEO: Hiển thị Video đầu tiên
+            if (data.video) {
+                const videoEl = document.createElement('video');
+                videoEl.id = 'modal-main-video';
+                videoEl.src = data.video;
+                videoEl.controls = true;
+                videoEl.autoplay = true;
+                videoEl.muted = true; // Autoplay thường yêu cầu muted trên web
+                videoEl.loop = true;
+                
+                if (isPortrait) {
+                     videoEl.className = "h-full w-auto max-w-full object-contain";
+                } else {
+                     videoEl.className = "w-full h-full object-cover";
+                }
+                
+                imgContainer.appendChild(videoEl);
+            } else {
+                // Nếu không có video, mặc định hiện ảnh đầu tiên
+                mainImg.src = data.images[0] || '';
+                imgContainer.appendChild(mainImg);
+            }
 
-            mainImg.src = data.images[0] || ''; 
             thumbContainer.innerHTML = ''; 
 
+            // Hàm hỗ trợ chuyển đổi giữa video và ảnh khi click thumbnail
+            function setMainMedia(type, src) {
+                imgContainer.innerHTML = ''; // Xóa sạch nội dung cũ
+                if (type === 'video') {
+                    const videoEl = document.createElement('video');
+                    videoEl.src = src;
+                    videoEl.controls = true;
+                    videoEl.autoplay = true;
+                    if (isPortrait) {
+                         videoEl.className = "h-full w-auto max-w-full object-contain transition-opacity duration-300";
+                    } else {
+                         videoEl.className = "w-full h-full object-cover transition-opacity duration-300";
+                    }
+                    imgContainer.appendChild(videoEl);
+                } else {
+                    mainImg.style.opacity = 0;
+                    imgContainer.appendChild(mainImg);
+                    setTimeout(() => {
+                        mainImg.src = src;
+                        mainImg.style.opacity = 1;
+                    }, 50); // Cho HTML kịp render rỗng rồi fade in
+                }
+            }
+
+            // Tạo thumbnail cho VIDEO (nếu có)
+            if (data.video) {
+                const videoThumbContainer = document.createElement('div');
+                videoThumbContainer.className = 'relative cursor-pointer group flex-shrink-0';
+                
+                // Dùng ảnh đầu tiên làm thumbnail đại diện cho video (có icon Play)
+                const thumb = document.createElement('img');
+                thumb.src = data.images[0] || 'https://placehold.co/100x100?text=Video';
+                
+                if (isPortrait) {
+                    thumb.className = `w-12 h-20 md:w-16 md:h-28 object-cover rounded border-2 transition-colors border-[${data.color}] opacity-80 group-hover:opacity-100`;
+                } else {
+                    thumb.className = `w-20 h-14 md:w-24 md:h-16 object-cover rounded border-2 transition-colors border-[${data.color}] opacity-80 group-hover:opacity-100`;
+                }
+                thumb.style.borderColor = data.color;
+
+                // Tạo icon play chèn lên thumbnail
+                const playIcon = document.createElement('div');
+                playIcon.className = 'absolute inset-0 flex items-center justify-center text-white drop-shadow-md text-xs md:text-sm';
+                playIcon.innerHTML = '<i class="fa-solid fa-play"></i>';
+                
+                videoThumbContainer.appendChild(thumb);
+                videoThumbContainer.appendChild(playIcon);
+
+                videoThumbContainer.addEventListener('mouseenter', playHoverSound);
+                videoThumbContainer.onclick = () => {
+                    playSelectSound();
+                    setMainMedia('video', data.video);
+                    
+                    // Reset viền tất cả thumbnail
+                    Array.from(thumbContainer.querySelectorAll('img')).forEach(child => child.style.borderColor = '#374151');
+                    thumb.style.borderColor = data.color;
+                };
+                
+                thumbContainer.appendChild(videoThumbContainer);
+            }
+
+            // Tạo thumbnail cho ẢNH
             data.images.forEach((imgSrc, index) => {
                 const thumb = document.createElement('img');
                 thumb.src = imgSrc;
                 
                 // Khung thumbnail dọc hoặc ngang tương ứng
                 if (isPortrait) {
-                    thumb.className = `w-12 h-20 md:w-16 md:h-28 object-cover rounded cursor-pointer border-2 transition-colors hover:border-white ${index === 0 ? 'border-['+data.color+']' : 'border-gray-700'}`;
+                    thumb.className = `w-12 h-20 md:w-16 md:h-28 object-cover rounded cursor-pointer border-2 transition-colors hover:border-white ${(!data.video && index === 0) ? 'border-['+data.color+']' : 'border-gray-700'} flex-shrink-0`;
                 } else {
-                    thumb.className = `w-20 h-14 md:w-24 md:h-16 object-cover rounded cursor-pointer border-2 transition-colors hover:border-white ${index === 0 ? 'border-['+data.color+']' : 'border-gray-700'}`;
+                    thumb.className = `w-20 h-14 md:w-24 md:h-16 object-cover rounded cursor-pointer border-2 transition-colors hover:border-white ${(!data.video && index === 0) ? 'border-['+data.color+']' : 'border-gray-700'} flex-shrink-0`;
                 }
                 
-                // Set viền bằng style inline tránh lỗi Tailwind sinh động
-                if (index === 0) thumb.style.borderColor = data.color;
+                // Nếu KHÔNG có video, mặc định chọn ảnh đầu tiên. Nếu CÓ video, video đã chọn trước đó rồi.
+                if (!data.video && index === 0) thumb.style.borderColor = data.color;
 
-                // Gắn thêm sự kiện hover cho ảnh nhỏ để kêu bíp
                 thumb.addEventListener('mouseenter', playHoverSound);
 
                 thumb.onclick = () => {
-                    playSelectSound(); // Âm thanh khi chuyển ảnh
-                    mainImg.style.opacity = 0;
-                    setTimeout(() => {
-                        mainImg.src = imgSrc;
-                        mainImg.style.opacity = 1;
-                    }, 150);
+                    playSelectSound();
+                    setMainMedia('image', imgSrc);
 
-                    Array.from(thumbContainer.children).forEach(child => {
-                        child.style.borderColor = '#374151'; 
-                    });
+                    // Reset viền tất cả thumbnail
+                    Array.from(thumbContainer.querySelectorAll('img')).forEach(child => child.style.borderColor = '#374151');
                     thumb.style.borderColor = data.color;
                 };
                 thumbContainer.appendChild(thumb);

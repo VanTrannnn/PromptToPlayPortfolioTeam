@@ -1,0 +1,8 @@
+{
+    "chat.tools.terminal.autoApprove": {
+        "/^Set-Location 'c:\\\\Users\\\\Admin\\\\Desktop\\\\New folder'; node --check script\\.js$/": {
+            "approve": true,
+            "matchCommandLine": true
+        }
+    }
+}
